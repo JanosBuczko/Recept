@@ -72,8 +72,8 @@ def sum_recipe():
         row_by_row = str(row.coordinate[1:])
         if sheet['A' + row_by_row].value == 2:
             sum_recipe.all_recipe = int(row_by_row)-2
-            print('Összes:' + str(sum_recipe.all_recipe))
-            break
+            return sum_recipe.all_recipe
+            
    
 
 #GUI---------------------------------
@@ -94,7 +94,7 @@ if __name__ == "__main__":
     e2 = Entry(master)#
     e2.grid(row=2, column=1)
 
-    Label(master, text="Mentett receptjeid száma: {}".format(sum_recipe.all_recipe)).grid(row=0, sticky=W)
+    Label(master, text="Mentett receptjeid száma: {}".format(sum_recipe())).grid(row=0, sticky=W)
     Label(master, text="Recept nev:").grid(row=1, sticky=W)
     Label(master, text="Recept link:").grid(row=2, sticky=W)
     Label(master, text="Mit főzzek?").grid(row=4, sticky=W)
