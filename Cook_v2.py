@@ -42,7 +42,7 @@ def save_recipe():
 
     messagebox.showinfo("Információ", 'Sikeresen hozzáadtad a receptet a listádhoz')
 
-    all_recipe +=1
+    update_recipe_num()
 
 def search():
     Recipe_name = []
@@ -84,6 +84,14 @@ def sum_recipe():
             all_recipe = int(row_by_row)-2
             return
 
+def update_recipe_num():
+    global all_recipe
+    for row in sheet['A']:
+        row_by_row = str(row.coordinate[1:])
+        if sheet['A' + row_by_row].value == 2:
+            all_recipe = int(row_by_row) - 2
+            master.update()
+            return
 
 
 #GUI---------------------------------
@@ -103,10 +111,13 @@ if __name__ == "__main__":
     e2 = Entry(master)
     e2.grid(row=2, column=1)
 
-    Label(master, text ="Mentett receptjeid száma: {}".format(all_recipe)).grid(row=0, sticky=W)
-    Label(master, text="Recept nev:").grid(row=1, sticky=W)
-    Label(master, text="Recept link:").grid(row=2, sticky=W)
-    Label(master, text="Mit főzzek?").grid(row=4, sticky=W)
+    var = StringVar()
+    var.set("Mentett receptjeid száma: {}".format(all_recipe))
+
+    lab_1 = Label(master, textvariable=var, ).grid(row=0, sticky=W)
+    lab_2 = Label(master, text="Recept nev:").grid(row=1, sticky=W)
+    lab_3 = Label(master, text="Recept link:").grid(row=2, sticky=W)
+    lab_4 = Label(master, text="Mit főzzek?").grid(row=4, sticky=W)
 
     Button(master, text='Mentés', command=save_recipe).grid(row=3, column=1)
     Button(master, text='Mondd meg', command=search).grid(row=5, column=0)
