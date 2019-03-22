@@ -42,7 +42,8 @@ def save_recipe():
 
     messagebox.showinfo("Információ", 'Sikeresen hozzáadtad a receptet a listádhoz')
 
-    var.set("Mentett receptjeid száma: {}".format(all_recipe + 1))
+    update_sum_num()
+
 
 def search():
     Recipe_name = []
@@ -83,6 +84,11 @@ def sum_recipe():
         if sheet['A' + row_by_row].value == 2:
             all_recipe = int(row_by_row)-2
             return all_recipe
+
+def update_sum_num():
+    global all_recipe
+    all_recipe += 1
+    var.set("Mentett receptjeid száma: {}".format(all_recipe))
 
 #GUI---------------------------------
 
