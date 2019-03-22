@@ -42,7 +42,7 @@ def save_recipe():
 
     messagebox.showinfo("Információ", 'Sikeresen hozzáadtad a receptet a listádhoz')
 
-    update_recipe_num()
+    var.set("Mentett receptjeid száma: {}".format(all_recipe + 1))
 
 def search():
     Recipe_name = []
@@ -67,9 +67,9 @@ def search():
         if sheet['A' + row_by_row].value == 2:
             break
     
-    print(Recipe_name[1:-1])
-    print(Recipe_link[1:-1])
-    print(Recipe_date[1:-1])
+    #print(Recipe_name[1:-1])
+    #print(Recipe_link[1:-1])
+    #print(Recipe_date[1:-1])
 
     print(type(Recipe_date[0]))
 
@@ -82,17 +82,7 @@ def sum_recipe():
         row_by_row = str(row.coordinate[1:])
         if sheet['A' + row_by_row].value == 2:
             all_recipe = int(row_by_row)-2
-            return
-
-def update_recipe_num():
-    global all_recipe
-    for row in sheet['A']:
-        row_by_row = str(row.coordinate[1:])
-        if sheet['A' + row_by_row].value == 2:
-            all_recipe = int(row_by_row) - 2
-            master.update()
-            return
-
+            return all_recipe
 
 #GUI---------------------------------
 
@@ -104,7 +94,7 @@ if __name__ == "__main__":
 
     master = tk.Tk()
     master.title('Mit főzzek ma?')
-    master.geometry('500x500')
+    master.geometry('500x200')
 
     e1 = Entry(master)
     e1.grid(row=1, column=1)
@@ -114,7 +104,7 @@ if __name__ == "__main__":
     var = StringVar()
     var.set("Mentett receptjeid száma: {}".format(all_recipe))
 
-    lab_1 = Label(master, textvariable=var, ).grid(row=0, sticky=W)
+    lab_1 = Label(master, textvariable=var).grid(row=0, sticky=W)
     lab_2 = Label(master, text="Recept nev:").grid(row=1, sticky=W)
     lab_3 = Label(master, text="Recept link:").grid(row=2, sticky=W)
     lab_4 = Label(master, text="Mit főzzek?").grid(row=4, sticky=W)
