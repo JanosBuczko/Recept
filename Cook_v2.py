@@ -10,6 +10,7 @@ from tkinter import messagebox
 #Time moduls
 import time
 import datetime
+from dateutil import parser
 
 #Other
 from re import split
@@ -20,6 +21,8 @@ database = openpyxl.load_workbook('Receptek.xlsx')
 sheet = database['Sheet1']
 
 def save_recipe():
+    global all_recipe
+
     now = time.localtime(time.time())
      
     for row in sheet['A']:
@@ -32,16 +35,19 @@ def save_recipe():
     sheet['C' + str(row_by_row)].value = e2.get()
     sheet['D' + str(row_by_row)].value = time.strftime("%Y-%m-%d", now)
 
-    e1.delete(first=0, last= 20)
-    e2.delete(first=0, last= 20)
+    e1.delete(first=0, last=20)
+    e2.delete(first=0, last=20)
                              
     database.save("C:\JanosBuczko\Python\scipts\Cook\Receptek.xlsx")
 
     messagebox.showinfo("Információ", 'Sikeresen hozzáadtad a receptet a listádhoz')
 
-    sum_recipe()
+    all_recipe +=1
 
 def search():
+    Recipe_name = []
+    Recipe_link = []
+    Recipe_date = []
 
     for row in sheet['B']:
         row_by_row = str(row.coordinate[1:])
@@ -61,29 +67,32 @@ def search():
         if sheet['A' + row_by_row].value == 2:
             break
     
-    #print(Recipe_name[1:-1])
-    #print(Recipe_link[1:-1])
-    #print(Recipe_date[1:-1])
+    print(Recipe_name[1:-1])
+    print(Recipe_link[1:-1])
+    print(Recipe_date[1:-1])
+
+    print(type(Recipe_date[0]))
 
     print(random.choice(Recipe_name[1:-1]))
+    print(all_recipe)
 
 def sum_recipe():
+    global all_recipe
     for row in sheet['A']:
         row_by_row = str(row.coordinate[1:])
         if sheet['A' + row_by_row].value == 2:
-            sum_recipe.all_recipe = int(row_by_row)-2
-            return sum_recipe.all_recipe
-            
-   
+            all_recipe = int(row_by_row)-2
+            return
+
+
 
 #GUI---------------------------------
-        
-if __name__ == "__main__":
-    sum_recipe()
 
-    Recipe_name = []
-    Recipe_link = []
-    Recipe_date = []
+if __name__ == "__main__":
+
+    all_recipe = 0
+
+    sum_recipe()
 
     master = tk.Tk()
     master.title('Mit főzzek ma?')
@@ -91,15 +100,14 @@ if __name__ == "__main__":
 
     e1 = Entry(master)
     e1.grid(row=1, column=1)
-    e2 = Entry(master)#
+    e2 = Entry(master)
     e2.grid(row=2, column=1)
 
-    Label(master, text="Mentett receptjeid száma: {}".format(sum_recipe())).grid(row=0, sticky=W)
+    Label(master, text ="Mentett receptjeid száma: {}".format(all_recipe)).grid(row=0, sticky=W)
     Label(master, text="Recept nev:").grid(row=1, sticky=W)
     Label(master, text="Recept link:").grid(row=2, sticky=W)
     Label(master, text="Mit főzzek?").grid(row=4, sticky=W)
 
-    
     Button(master, text='Mentés', command=save_recipe).grid(row=3, column=1)
     Button(master, text='Mondd meg', command=search).grid(row=5, column=0)
 
